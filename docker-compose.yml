@@ -1,0 +1,21 @@
+services:
+
+  backend:
+    build: ./backend
+    container_name: simple-backend
+    environment:
+      MONGO_URI: mongodb://host.docker.internal:27017/simple_deployment_app
+
+  frontend:
+    build: ./frontend
+    container_name: simple-frontend
+  nginx:
+    image: nginx:alpine
+    container_name: simple-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
